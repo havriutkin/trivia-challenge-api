@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');            // For pasing body
 const cors = require('cors');                         // For limiting domains that can make requests to api
 const dotenv = require('dotenv');                     // For environment variables
 const morgan = require('morgan');                     // For logging
+const cookieParser = require('cookie-parser');        // For parsing cookies
 
 // Internal dependencies
 const authRouter = require('./src/routes/authRouter');
@@ -35,6 +36,9 @@ app.use(
     extended: true,
   })
 );
+
+// Cookie parser
+app.use(cookieParser());
 
 // Logger
 app.use(logger);
