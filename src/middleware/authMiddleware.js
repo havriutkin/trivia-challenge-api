@@ -4,10 +4,14 @@ require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const authMiddleware = (req, res, next) => {
-    const token = req.get('Authorization').split(' ')[1];
+    const token = req.cookies.token;
     if (!token) return res.status(401).json({message: "Authorization is required."});
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+    } catch(err){
+        return res.status(401).json({message: "Invalid token"});
+    }
     return next();
 }
 

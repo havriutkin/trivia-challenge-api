@@ -34,8 +34,19 @@ const login = async (req, res) => {
     if (!await bcrypt.compare(password, data[0].password))
         return res.status(401).json({message: "Invalid credentials."});
 
-    const token = jwt.sign({username: data[0].username}, JWT_SECRET, {expiresIn: '1h'});
-    res.status(200).json({id: data[0].id, message: "Logged in.", token});
+    const token = jwt.sign({id: data[0].id, username: data[0].username}, JWT_SECRET, {expiresIn: '1h'});
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict'
+    });
+
+    res.status(200).json({id: data[0].id, message: "Logged in."});
 }
 
-module.exports = {register, login};
+const logout = async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({message: 'Log out.'});
+}
+
+module.exports = {register, login, logout};
