@@ -20,10 +20,13 @@ const getById = async (req, res) => {
 
 const getStatisticsById = async (req, res) => {
     const {userId} = req.params;
+
+    // Get quizzes from database
     const sql = "SELECT * FROM quiz WHERE user_id = $1";
     const parameters = [userId];
     const data = await query(sql, parameters);
 
+    // Helper functions
     const sumByDifficulty = (difficulty) => data.reduce((acc, quiz) => 
             quiz.difficulty === difficulty ? acc + quiz.questions_total : acc, 0);
     
