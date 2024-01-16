@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router()
 const upload = require('../config/multer.config'); // For file uploads
 
-const { getById, uploadPicture } = require('../controllers/userController');
+const { getById, uploadPicture, getStatisticsById } = require('../controllers/userController');
 const { authMiddleware } = require('../middleware/authMiddleware');
 
 router.get('/:userId', getById);
-router.post('/uploadPicture/:userId', upload.single('profileImg'), uploadPicture);
+router.get('/statistics/:userId', getStatisticsById);
+router.post('/picture/:userId', upload.single('profileImg'), uploadPicture);
 
 module.exports = router

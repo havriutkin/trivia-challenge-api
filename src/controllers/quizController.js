@@ -15,7 +15,7 @@ const getByUserId = async (req, res) => {
     const sql = "SELECT * FROM quiz WHERE user_id = $1";
     const parameters = [userId];
     const data = await query(sql, parameters);
-    res.status(200).json({message: "Statistics found.", statistics: data});
+    res.status(200).json({message: "Quizes found.", quiz: data});
 }
 
 const generateQuiz = async (req, res) => {

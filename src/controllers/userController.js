@@ -18,6 +18,48 @@ const getById = async (req, res) => {
     })
 }
 
+const getStatisticsById = async (req, res) => {
+    const {userId} = req.params;
+    const sql = "SELECT * FROM quiz WHERE user_id = $1";
+    const parameters = [userId];
+    const data = await query(sql, parameters);
+
+    const sumByDifficulty = (difficulty) => data.reduce((acc, quiz) => 
+            quiz.difficulty === difficulty ? acc + quiz.questions_total : acc, 0);
+    
+    const sumRightAnswersByDifficulty = (difficulty) => data.reduce((acc, quiz) => 
+            quiz.difficulty === difficulty ? acc + quiz.questions_total : acc, 0);
+
+    // Gather statistics
+    // Number of questions
+    const totalQuizes = data.length;
+    const totalQuiestions = data.reduce((acc, quiz) => quiz.questions_total + acc, 0);
+    const easyQuestions = sumByDifficulty('easy');
+    const mediumQuestions = sumByDifficulty('medium');
+    const hardQuestions = sumByDifficulty('hard');
+
+    // Number of right answers
+    const totalRightAnswers = data.reduce((acc, quiz) => quiz.right_answers + acc, 0);
+    const easyRightAnswers = sumRightAnswersByDifficulty('easy');
+    const mediumRightAnswers = sumRightAnswersByDifficulty('medium');
+    const hardRightAnswers = sumRightAnswersByDifficulty('hard');
+
+    // Topics
+    const topics = data.reduce((acc, quiz) => {
+        acc[quiz.topic] = (acc[quiz.topic] || 0) + 1;
+        return acc;
+    }, {});
+
+    const statistics = {
+        totalQuizes,
+        totalQuiestions, easyQuestions, mediumQuestions, hardQuestions,
+        totalRightAnswers, easyRightAnswers, mediumRightAnswers, hardRightAnswers,
+        topics
+    };
+
+    res.status(200).json({message: "Statistics found.", data: statistics});
+}
+
 const uploadPicture = async (req, res) => {
     const {userId} = req.params;
     const url = '/public/profile_images/' + req.file.filename;
@@ -27,4 +69,4 @@ const uploadPicture = async (req, res) => {
     res.status(201).json({message: 'Profile image uploaded.'});
 }
 
-module.exports = { getById, uploadPicture };
+module.exports = { getById, uploadPicture, getStatisticsById };
