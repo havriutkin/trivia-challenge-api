@@ -22,10 +22,11 @@ const getStatisticsById = async (req, res) => {
     const {userId} = req.params;
 
     // Get quizzes from database
+    let data = [];
     try {
         const sql = "SELECT * FROM quiz WHERE user_id = $1";
         const parameters = [userId];
-        const data = await query(sql, parameters);
+        data = await query(sql, parameters);
     } catch(err){
         return res.status(500).json({message: "Can't get data."});
     }
@@ -35,7 +36,7 @@ const getStatisticsById = async (req, res) => {
             quiz.difficulty === difficulty ? acc + quiz.questions_total : acc, 0);
     
     const sumRightAnswersByDifficulty = (difficulty) => data.reduce((acc, quiz) => 
-            quiz.difficulty === difficulty ? acc + quiz.questions_total : acc, 0);
+            quiz.difficulty === difficulty ? acc + quiz.right_answers : acc, 0);
 
     // Gather statistics
     // Number of questions
