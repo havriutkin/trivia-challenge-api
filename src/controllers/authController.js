@@ -38,7 +38,7 @@ const login = async (req, res) => {
         id: data[0].id,
         username: data[0].username,
         email: data[0].email,
-        joindDate: data[0].join_date,
+        joindDate: data[0].join_date.slice(0, 10),
         profileImg: data[0].image_url
     };
 
