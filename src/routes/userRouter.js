@@ -7,6 +7,6 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 
 router.get('/:userId', getById);
 router.get('/statistics/:userId', getStatisticsById);
-router.post('/picture/:userId', upload.single('profileImg'), uploadPicture);
+router.post('/picture', [authMiddleware, upload.single('profileImg')], uploadPicture);
 
 module.exports = router

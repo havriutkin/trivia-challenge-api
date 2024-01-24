@@ -1,6 +1,5 @@
 /* Interaction with public Trivia API */
 
-//https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple
 const topics = require('../config/topics.config');
 
 const requestQuestions = async (number, topic, difficulty) => {

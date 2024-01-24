@@ -6,8 +6,8 @@ const storage = multer.diskStorage({
         cb(null, 'public/profile_images');
     },
     filename: function (req, file, cb) {
-        const { userId } = req.params;
-        cb(null, `profileImg${userId}${path.extname(file.originalname)}`);
+        const { id } = req.user;
+        cb(null, `profileImg${id}${path.extname(file.originalname)}`);
     }
 });
 

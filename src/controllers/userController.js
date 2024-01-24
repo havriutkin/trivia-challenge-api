@@ -1,24 +1,29 @@
 const { use } = require('../..');
 const { query } = require('../config/db.config');
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     const { userId } = req.params;
     const sql = 'SELECT * FROM "user" WHERE id = $1';
     const parameters = [userId];
-    const data = await query(sql, parameters);
 
-    if (data.length === 0) return res.status(404).json({message: 'User not found.'});
+    try {
+        const data = await query(sql, parameters);
 
-    res.status(200).json({
-        message: 'Information retrieved.',
-        username: data[0].username,
-        email: data[0].email,
-        join_date: data[0].join_date,
-        image_url: data[0].image_url
-    })
+        if (data.length === 0) return res.status(404).json({message: 'User not found.'});
+
+        res.status(200).json({
+            message: 'Information retrieved.',
+            username: data[0].username,
+            email: data[0].email,
+            join_date: data[0].join_date,
+            image_url: data[0].image_url
+        })
+    } catch(err) {
+        next(err)
+    }
 }
 
-const getStatisticsById = async (req, res) => {
+const getStatisticsById = async (req, res, next) => {
     const {userId} = req.params;
 
     // Get quizzes from database
@@ -28,7 +33,8 @@ const getStatisticsById = async (req, res) => {
         const parameters = [userId];
         data = await query(sql, parameters);
     } catch(err){
-        return res.status(500).json({message: "Can't get data."});
+        next(err);
+        return;
     }
 
     // Helper functions
@@ -68,13 +74,17 @@ const getStatisticsById = async (req, res) => {
     res.status(200).json({message: "Statistics found.", data: statistics});
 }
 
-const uploadPicture = async (req, res) => {
-    const {userId} = req.params;
-    const url = '/public/profile_images/' + req.file.filename;
+const uploadPicture = async (req, res, next) => {
+    const { id } = req.user;
+    const url = 'profile_images/' + req.file.filename;
     const sql = 'UPDATE "user" SET image_url = $1 WHERE id = $2'
-    const parameters = [url, userId];
-    const data = await query(sql, parameters);
-    res.status(201).json({message: 'Profile image uploaded.'});
+    const parameters = [url, id];
+    try {
+        await query(sql, parameters);
+        res.status(201).json({message: 'Profile image uploaded.'});
+    } catch(err) {
+        next(err);
+    }
 }
 
 module.exports = { getById, uploadPicture, getStatisticsById };
