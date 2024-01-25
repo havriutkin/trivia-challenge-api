@@ -1,21 +1,25 @@
 /* ------------ Imports ------------ */
 // External dependencies
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');            // For pasing body
 const cors = require('cors');                         // For limiting domains that can make requests to api
 const dotenv = require('dotenv');                     // For environment variables
 const morgan = require('morgan');                     // For logging
 const cookieParser = require('cookie-parser');        // For parsing cookies
+const helmet = require('helmet');                     // For security headers
 
 // Internal dependencies
 const authRouter = require('./src/routes/authRouter');
 const userRouter = require('./src/routes/userRouter');
 const quizRouter = require('./src/routes/quizRouter');
 const errorHandler = require('./src/middleware/errorHandlerMiddleware');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 4000;
-const logger = morgan('tiny');
+
+
 const corsOptions = {
   origin: 'http://localhost:3000',
   credentials: true,
@@ -24,6 +28,9 @@ const corsOptions = {
 
 
 /* ------------ Middlewares ------------ */
+// Helmet
+app.use(helmet());
+
 // Cors
 app.use(cors(corsOptions));
 
@@ -42,6 +49,8 @@ app.use(
 app.use(cookieParser());
 
 // Logger
+const logStream = fs.createWriteStream(path.join(__dirname, 'activity.log'), {flags: 'a'});
+const logger = morgan('common', {stream: logStream});
 app.use(logger);
 
 // Routes
