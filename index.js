@@ -19,9 +19,9 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 4000;
 
-
+//https://trivia-challenge-client.onrender.com'
 const corsOptions = {
-  origin: 'https://trivia-challenge-client.onrender.com',
+  origin: '*',
   credentials: true,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
@@ -32,7 +32,7 @@ const corsOptions = {
 app.disable('x-powered-by')
 
 // Helmet
-//app.use(helmet());
+app.use(helmet());
 
 // Cors
 app.use(cors(corsOptions));
