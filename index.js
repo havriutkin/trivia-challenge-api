@@ -28,8 +28,11 @@ const corsOptions = {
 
 
 /* ------------ Middlewares ------------ */
+// Disable powered-by header
+app.disable('x-powered-by')
+
 // Helmet
-app.use(helmet());
+//app.use(helmet());
 
 // Cors
 app.use(cors(corsOptions));
