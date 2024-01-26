@@ -21,7 +21,7 @@ const port = process.env.PORT || 4000;
 
 //https://trivia-challenge-client.onrender.com'
 const corsOptions = {
-  origin: '*',
+  origin: 'https://trivia-challenge-client.onrender.com',
   credentials: true,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
