@@ -49,7 +49,7 @@ In this section used technologies and project goals are described
 
 ### Trivia Challenge Info
 <p>Trivia Challange app - is a web app, that allows users to complete random quizes of different difficulty and keep track of their statistics.</p>
-</p>Front-end is built using React and TaillwindCSS. More <a href="google.com">details here</a>.</p>
+</p>Front-end is built using React and TaillwindCSS. More <a href="https://github.com/havriutkin/trivia-challenge-client">details here</a>.</p>
 </p>Back-end is built using NodeJS, ExpressJS and PostgreSQL. More <a href="https://github.com/havriutkin/trivia-challenge-api">details here</a>.</p>
 
 ### Overview
