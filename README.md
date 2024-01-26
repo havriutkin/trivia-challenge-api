@@ -7,7 +7,7 @@
 <div align="center">
   <h1 align="center">Trivia Challenge API</h1>
   <p align="center">
-    A RESTful API for TRIVIA Challege app
+    A RESTful API for Trivia Challege app
   </p>
 </div>
 
