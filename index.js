@@ -50,7 +50,8 @@ app.use(cookieParser());
 
 // Logger
 const logStream = fs.createWriteStream(path.join(__dirname, 'activity.log'), {flags: 'a'});
-const logger = morgan('common', {stream: logStream});
+// Don't include file stream for now, due to render free service
+const logger = morgan('common');
 app.use(logger);
 
 // Routes
