@@ -59,7 +59,9 @@ app.use('/api/user', userRouter);
 app.use('/api/quiz', quizRouter);
 
 // Error handler
-app.use(errorHandler);
+const errStream = fs.createWriteStream(path.join(__dirname, 'errors.log'), {flags: 'a'});
+const errorMiddleware = errorHandler(errStream);
+app.use(errorMiddleware);
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
